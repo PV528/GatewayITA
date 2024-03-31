@@ -14,3 +14,5 @@ V tem projektu smo dodali dva vratna strežnika:
 + Z uporabo predpone /mobile/** omejuje dostop le na branje podatkov, kar povečuje varnost in zmanjšuje možnost neželenih sprememb podatkov.
 + Omogoča zgolj branje podatkov.
 + Teče na localhost:3010.
+
+Dodali smo obe Dockerfile datoteki za kontejnerizacijo in docker-compose datoteko za konfiguracijo vseh mikrostoritev, podatkovnih baz in vratnih strežnikov.
