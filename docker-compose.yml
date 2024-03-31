@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  carservice:
+    image: microservice1-carservice
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+
+  rentalservice:
+    image: microservice2-rentalservice
+    environment:
+      - QUARKUS_MONGODB_CONNECTION_STRING=mongodb://mongoquarkus:27017/
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mongoquarkus
+
+  userservice:
+    image: microservice3-userservice
+    environment:
+      - QUARKUS_MONGODB_CONNECTION_STRING=mongodb://mongoreactive:27017/
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongoreactive
+      - rabbitmqquarkus
+
+  mongo:
+    image: mongo:4.4.6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "rootadmin"
+      MONGO_INITDB_ROOT_PASSWORD: "secret"
+      MONGO_INITDB_DATABASE: "cardb"
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+
+  mongoquarkus:
+    image: mongo:4.4.6
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data_quarkus:/data/db
+
+  mongoreactive:
+    image: mongo:4.4.6
+    ports:
+      - "27019:27017"
+    volumes:
+      - mongodb_data_reactive:/data/db
+
+  rabbitmqquarkus:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"  # AMQP port
+      - "15672:15672"  # Management UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+  gatewayWeb:
+    image: webgateway   
+    ports:
+      - "3000:3000"  
+    depends_on:
+      - carservice  
+      - rentalservice
+      - userservice
+
+  mobilewayWeb:
+    image: mobilegateway   
+    ports:
+      - "3010:3010"  
+    depends_on:
+      - carservice  
+      - rentalservice
+      - userservice
+
+volumes:
+  mongodb_data_quarkus:
+  mongodb_data_reactive:
+  mongodb_data_container:
+  rabbitmq_data:

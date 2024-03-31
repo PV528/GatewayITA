@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package org.acme;
+
+service RentalService {
+  rpc CreateRental (RentalRequest) returns (RentalResponse) {}
+  rpc GetRental (RentalGetRequest) returns (RentalGetResponse) {}
+  rpc DeleteRental (RentalGetRequest) returns (RentalResponse) {}
+  rpc UpdateRental (RentalPutRequest) returns (RentalPutResponse) {}
+  rpc AllRental (RentalGetAllRequest) returns (stream RentalGetResponse) {}
+}
+message RentalRequest {
+  string rentStart = 1;
+  string rentEnd = 2;
+  int32 price=3;
+  string carId = 4;
+}
+
+message RentalResponse {
+  string message = 1;
+}
+
+message RentalGetRequest{
+  string rentalId = 1;
+}
+
+message RentalGetResponse {
+  string rentStart = 1;
+  string rentEnd = 2;
+  int32 price=3;
+  string carId = 4;
+}
+message RentalPutRequest {
+  string rentalId = 1;
+  string rentStart = 2;
+  string rentEnd = 3;
+  int32 price=4;
+  string carId = 5;
+}
+message RentalPutResponse {
+  string rentalId = 1;
+  string rentStart = 2;
+  string rentEnd = 3;
+  int32 price=4;
+  string carId = 5;
+}
+
+message RentalGetAllRequest {
+}
