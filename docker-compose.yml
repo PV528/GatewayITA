@@ -2,14 +2,14 @@ version: '3.8'
 
 services:
   carservice:
-    image: microservice1-carservice
+    image: peter752/carservice
     ports:
       - "8080:8080"
     depends_on:
       - mongo
 
   rentalservice:
-    image: microservice2-rentalservice
+    image: peter752/rentalservice
     environment:
       - QUARKUS_MONGODB_CONNECTION_STRING=mongodb://mongoquarkus:27017/
     ports:
@@ -18,7 +18,7 @@ services:
       - mongoquarkus
 
   userservice:
-    image: microservice3-userservice
+    image: peter752/userservice
     environment:
       - QUARKUS_MONGODB_CONNECTION_STRING=mongodb://mongoreactive:27017/
     ports:
@@ -64,7 +64,7 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
 
   gatewayWeb:
-    image: webgateway   
+    image: peter752/gateway-web   
     ports:
       - "3000:3000"  
     depends_on:
@@ -73,7 +73,7 @@ services:
       - userservice
 
   mobilewayWeb:
-    image: mobilegateway   
+    image: peter752/gateway-mobile   
     ports:
       - "3010:3010"  
     depends_on:
