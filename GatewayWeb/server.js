@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 require('dotenv').config();
 const grpc = require('@grpc/grpc-js');
 const { RentalServiceClient } = require('./generated/rental_grpc_pb');
@@ -14,6 +15,7 @@ const grpcClient = new RentalServiceClient(
 );
 
 app.use(express.json());
+app.use (cors);
 
 app.all('/cars/*', async (req, res) => {
     try {
