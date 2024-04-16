@@ -15,7 +15,8 @@ const grpcClient = new RentalServiceClient(
 );
 
 app.use(express.json());
-app.use (cors);
+app.use(cors());
+
 
 app.all('/cars/*', async (req, res) => {
     try {
