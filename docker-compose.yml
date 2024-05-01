@@ -52,6 +52,14 @@ services:
     volumes:
       - mongodb_data_reactive:/data/db
 
+  mongologs:
+    image: mongo:4.4.6
+    ports:
+      - "27020:27017"
+    volumes:
+      - mongologs:/data/db
+
+
   rabbitmqquarkus:
     image: rabbitmq:management
     ports:
@@ -71,6 +79,7 @@ services:
       - carservice  
       - rentalservice
       - userservice
+      - mongologs
 
   mobilewayWeb:
     image: peter752/gateway-mobile   
@@ -81,8 +90,25 @@ services:
       - rentalservice
       - userservice
 
+  statistic:
+    image: peter752/statistic
+    ports: 
+      - "4010:4010"
+    depends_on:
+      - mongologs
+  
+  healthcheck:
+    image: peter752/healthcheck
+    ports: 
+      - "4000:4000"
+    depends_on:
+      - carservice
+      - rentalservice
+      - userservice
+
 volumes:
   mongodb_data_quarkus:
   mongodb_data_reactive:
   mongodb_data_container:
+  mongologs:
   rabbitmq_data:
