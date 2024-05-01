@@ -2,10 +2,31 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 require('dotenv').config();
+const mongoose = require('mongoose');
+const Log = require('./models/log');
 const grpc = require('@grpc/grpc-js');
 const { RentalServiceClient } = require('./generated/rental_grpc_pb');
 const { RentalRequest, RentalGetAllRequest, RentalGetRequest, RentalPutRequest} = require('./generated/rental_pb');
 
+mongoose.connect('mongodb://localhost:27020/logs', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(error => console.error('MongoDB connection error:', error));
+
+const logEndpoint = async (req, res, next) => {
+    try {
+      const log = new Log({
+        url: req.originalUrl,
+        method: req.method,
+      });
+      await log.save();
+      next();
+    } catch (error) {
+      next(error);
+    }
+};
 const app = express();
 const PORT = process.env.PORT;
 
@@ -16,6 +37,9 @@ const grpcClient = new RentalServiceClient(
 
 app.use(express.json());
 app.use(cors());
+app.use(logEndpoint);
+
+
 
 
 app.all('/cars/*', async (req, res) => {
