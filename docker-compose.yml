@@ -100,7 +100,7 @@ services:
   healthcheck:
     image: peter752/healthcheck
     ports: 
-      - "4000:4000"
+      - "4020:4020"
     depends_on:
       - carservice
       - rentalservice
