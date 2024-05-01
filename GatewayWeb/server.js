@@ -8,7 +8,7 @@ const grpc = require('@grpc/grpc-js');
 const { RentalServiceClient } = require('./generated/rental_grpc_pb');
 const { RentalRequest, RentalGetAllRequest, RentalGetRequest, RentalPutRequest} = require('./generated/rental_pb');
 
-mongoose.connect('mongodb://localhost:27020/logs', {
+mongoose.connect('mongodb://mongologs:27020/logs', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
