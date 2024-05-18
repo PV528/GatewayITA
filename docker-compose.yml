@@ -7,6 +7,8 @@ services:
       - "8080:8080"
     depends_on:
       - mongo
+    networks:
+      - ita-network
 
   rentalservice:
     image: peter752/rentalservice
@@ -16,6 +18,8 @@ services:
       - "9000:9000"
     depends_on:
       - mongoquarkus
+    networks:
+      - ita-network
 
   userservice:
     image: peter752/userservice
@@ -26,6 +30,8 @@ services:
     depends_on:
       - mongoreactive
       - rabbitmqquarkus
+    networks:
+      - ita-network
 
   mongo:
     image: mongo:4.4.6
@@ -37,6 +43,8 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data_container:/data/db
+    networks:
+      - ita-network
 
   mongoquarkus:
     image: mongo:4.4.6
@@ -44,6 +52,8 @@ services:
       - "27018:27017"
     volumes:
       - mongodb_data_quarkus:/data/db
+    networks:
+      - ita-network
 
   mongoreactive:
     image: mongo:4.4.6
@@ -51,6 +61,8 @@ services:
       - "27019:27017"
     volumes:
       - mongodb_data_reactive:/data/db
+    networks:
+      - ita-network
 
   mongologs:
     image: mongo:4.4.6
@@ -58,6 +70,8 @@ services:
       - "27020:27017"
     volumes:
       - mongologs:/data/db
+    networks:
+      - ita-network
 
 
   rabbitmqquarkus:
@@ -70,6 +84,8 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - ita-network
 
   gatewayWeb:
     image: peter752/gateway-web   
@@ -80,6 +96,8 @@ services:
       - rentalservice
       - userservice
       - mongologs
+    networks:
+      - ita-network
 
   mobilewayWeb:
     image: peter752/gateway-mobile   
@@ -89,6 +107,8 @@ services:
       - carservice  
       - rentalservice
       - userservice
+    networks:
+      - ita-network
 
   statistic:
     image: peter752/statistic
@@ -96,6 +116,8 @@ services:
       - "4010:4010"
     depends_on:
       - mongologs
+    networks:
+      - ita-network
   
   healthcheck:
     image: peter752/healthcheck
@@ -105,6 +127,8 @@ services:
       - carservice
       - rentalservice
       - userservice
+    networks:
+      - ita-network
 
 volumes:
   mongodb_data_quarkus:
@@ -112,3 +136,6 @@ volumes:
   mongodb_data_container:
   mongologs:
   rabbitmq_data:
+
+networks:
+  ita-network:
