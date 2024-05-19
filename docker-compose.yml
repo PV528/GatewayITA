@@ -87,7 +87,7 @@ services:
     networks:
       - ita-network
 
-  gatewayWeb:
+  gateway-web:
     image: peter752/gateway-web   
     ports:
       - "3000:3000"  
@@ -99,7 +99,7 @@ services:
     networks:
       - ita-network
 
-  mobilewayWeb:
+  mobileway-web:
     image: peter752/gateway-mobile   
     ports:
       - "3010:3010"  
@@ -139,3 +139,4 @@ volumes:
 
 networks:
   ita-network:
+    external: true
